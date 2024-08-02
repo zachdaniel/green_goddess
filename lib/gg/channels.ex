@@ -12,4 +12,6 @@ defmodule GG.Channels do
   def obsidian, do: 1_268_939_732_805_619_775
   def pink, do: 1_268_939_742_276_358_144
   def red, do: 1_268_939_749_532_635_157
+  def green_goddess, do: 1_268_939_238_099_910_697
+  def general, do: 126_875_208_204_812_305
 end

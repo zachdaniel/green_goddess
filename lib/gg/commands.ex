@@ -50,8 +50,7 @@ defmodule GG.Commands do
     end
   end
 
-  def handle_event({event, msg, _ws_state}) do
-    Logger.warning("Unhandled event: #{inspect(event)}\n\n#{inspect(msg)}")
+  def handle_event({_event, _msg, _ws_state}) do
     :ok
   end
 

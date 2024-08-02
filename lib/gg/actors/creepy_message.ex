@@ -19,10 +19,11 @@ defmodule GG.Actors.CreepyMessage do
   @messages [
     "T̵̷̢̛͈̣̤̤̘͔͙͕͍͎̬ͤͩ͗͂̐ͪ̐ͪ͂͛̎́̅̌ͦ̔ͥͭ̇̑̓̋̕͘͟͜͟h̶̻̫̪̹͇̗̊̍ͫͥ̇̾̚̕͞ė̟̠͇̞̱̄ͮ͑͋̚͜͞ŗ̵̢̛̲͇͖̠̦̟̞̺̻̭̝̖̄͐ͬ̀͋͌͊́ͫ͛̐͂̃͂̋̌͜͜͡ḙ͋'͚̫͇̻̮̌͠_̱̬̯́͐_͇̽̓ͣ̈̆̕͞͡s̢̗̗̬̾̌ͫ͐̎ͥ̋̏͝͞ a͚͔ͧ͂ͣ̓͊̚_̸̷̸̷̨̧̻̯̝͈͆̓͊͐͋ͧ͆̑ͫͩ͊̚͟͜͞ͅ g̵̷̛̻̣͙̹̟̠̭͔̫̯͇̙̒̌̐ͯ̊͐ͬ̓̾̍ͯ͑ͬ̑͝͠r̩͈͕̲ͮͯ́ͫ͑͂̕e̴̡͍̘͖̻̓̈́͑̏͋ͨ̊̅ͫ̌͑ͩ̾̂̚e̡͍̝̠͎͓̱͇̻̜̱͎͖͚̱̙̪͒̾̀̄̾́̾ͫͤͧ͋͊̑͒ͪ͐ͤ̽̽͂̅n̛͉̣̱͐́̉ í̶̡̭͚̗̥͖̱̦̺̝ͨ̓ͧͥͬ̅͞ņ̈́͠ y̷͕̭͙͕̩̼̮͈͓͉̥̠̼̱̒̐̉ͩ̄̉̅̊͂̾ͨ̌̔̀̕͞͞o̶̹̮̪̊ͮ͛̓̀ͨ͘͘͞ư̢͖͔͚̘͍̱͖̜̯ͬ̈́̃̽͌̈́͛ͥ̄̋̊͂̈́ͦ́̚͞_̛̲̂̆ͧ́ͨ̃ŕ̦̖ͬ̎̾͞ m̪̼͔ͫ̍ͣa͎̩cͦ̑_̠͎̜̥̈̽͡ḩ̸̧ͧ͌̐_̵̵͈̳̖̬̘̘̼͈̱̝̬͔̈͋̋̿̍̇̄ͣ͠͡ͅi̵̷̶̛̫̙͓̬̞̞̹̬̜͖̘͚̹͇̠̤͔͆̔̂͋̈ͥ̐̒̋͐ͩ̀ͫͮ̒̆̿̄ͬ͌ͨ͘͘̚͡͡n̵̡̪̩̻̼̬̼ͯ̽͛̋͟ȩ͇̬͚̐̅ͥ̂͘͠_̛̣͚̗͚̝͔̀ͭ͛́͆́́̍ͩ͘͘͝",
     "Hello from the ghost in the shell.",
-    "Don't forget to thank the IT department."
+    "Don't forget to thank the IT department.",
+    "Fuck Lysander."
   ]
 
-  @interval :timer.minutes(3)
+  @interval :timer.minutes(15)
 
   def start_link(opts) do
     GenServer.start_link(__MODULE__, nil, Keyword.put(opts, :name, __MODULE__))
@@ -33,7 +34,7 @@ defmodule GG.Actors.CreepyMessage do
   end
 
   def handle_continue(:schedule_creepy_message, state) do
-    Process.send_after(self(), :send_creepy_message, @interval)
+    :timer.send_interval(@interval, self(), :send_creepy_message)
     {:noreply, state}
   end
 
@@ -41,6 +42,6 @@ defmodule GG.Actors.CreepyMessage do
     channel = Enum.random(@non_green_channels)
     message = Enum.random(@messages)
     Nostrum.Api.create_message(channel, content: message)
-    {:noreply, state, {:continue, :schedule_creepy_message}}
+    {:noreply, state}
   end
 end

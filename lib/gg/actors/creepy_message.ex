@@ -22,7 +22,7 @@ defmodule GG.Actors.CreepyMessage do
     "Don't forget to thank the IT department."
   ]
 
-  @interval :timer.hours(1)
+  @interval :timer.minutes(3)
 
   def start_link(opts) do
     GenServer.start_link(__MODULE__, nil, Keyword.put(opts, :name, __MODULE__))

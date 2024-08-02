@@ -23,7 +23,8 @@ defmodule GG.MixProject do
   defp deps do
     [
       {:nostrum, "~> 0.10"},
-      {:igniter, "~> 0.3"}
+      {:igniter, "~> 0.3"},
+      {:ash, "~> 3.3"}
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
     ]

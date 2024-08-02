@@ -34,7 +34,7 @@ defmodule GG.Commands do
           }
         })
       else
-        case IO.inspect(unquote(module).perform(interaction)) do
+        case unquote(module).perform(interaction) do
           {:response, response} ->
             Nostrum.Api.create_interaction_response(interaction, %{
               type: 4,

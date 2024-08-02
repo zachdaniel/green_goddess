@@ -10,7 +10,8 @@ defmodule GG.Application do
     children = [
       # Starts a worker by calling: GG.Worker.start_link(arg)
       # {GG.Worker, arg}
-      GG.Commands
+      GG.Commands,
+      GG.Actors.CreepyMessage
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

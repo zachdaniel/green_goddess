@@ -19,7 +19,7 @@ RUN mix do compile, release
 # Run the app
 # -----------
 
-FROM hexpm/elixir:1.17.2-erlang-27.0.1-debian-bullseye-20240722 as build
+FROM hexpm/elixir:1.17.2-erlang-27.0.1-debian-bullseye-20240722
 ENV MIX_ENV=prod
 EXPOSE 3000
 

@@ -23,7 +23,7 @@ defmodule GG.Actors.CreepyMessage do
     "Fuck Lysander."
   ]
 
-  @interval :timer.minutes(15)
+  @interval :timer.hours(3)
 
   def start_link(opts) do
     GenServer.start_link(__MODULE__, nil, Keyword.put(opts, :name, __MODULE__))

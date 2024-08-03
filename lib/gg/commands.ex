@@ -50,7 +50,57 @@ defmodule GG.Commands do
     end
   end
 
-  def handle_event({_event, _msg, _ws_state}) do
+  @role_choice GG.Channels.role_choice()
+  def handle_event({:MESSAGE_REACTION_ADD, %{channel_id: channel_id} = interaction, _ws_state}) when channel_id == @role_choice do
+    roles = %{
+      "Green" => GG.Roles.green(),
+      "Silver" => GG.Roles.silver(),
+      "White" => GG.Roles.white(),
+      "Copper" => GG.Roles.copper(),
+      "Blue" => GG.Roles.blue(),
+      "Yellow" => GG.Roles.yellow(),
+      "Violet" => GG.Roles.violet(),
+      "Orange" => GG.Roles.orange(),
+      "Gray" => GG.Roles.gray(),
+      "Brown" => GG.Roles.brown(),
+      "Obsidian" => GG.Roles.obsidian(),
+      "Pink" => GG.Roles.pink(),
+      "Red" => GG.Roles.red()
+    }
+
+    role_to_grant = roles[interaction.emoji.name]
+
+    if role_to_grant && !Enum.any?(interaction.member.roles, &(&1 in Map.values(roles))) do
+      Nostrum.Api.add_guild_member_role(GG.server_id(), interaction.user_id, role_to_grant)
+    end
+  end
+
+  def handle_event({:MESSAGE_REACTION_REMOVE, %{channel_id: channel_id} = interaction, _ws_state}) when channel_id == @role_choice do
+    roles = %{
+      "Green" => GG.Roles.green(),
+      "Silver" => GG.Roles.silver(),
+      "White" => GG.Roles.white(),
+      "Copper" => GG.Roles.copper(),
+      "Blue" => GG.Roles.blue(),
+      "Yellow" => GG.Roles.yellow(),
+      "Violet" => GG.Roles.violet(),
+      "Orange" => GG.Roles.orange(),
+      "Gray" => GG.Roles.gray(),
+      "Brown" => GG.Roles.brown(),
+      "Obsidian" => GG.Roles.obsidian(),
+      "Pink" => GG.Roles.pink(),
+      "Red" => GG.Roles.red()
+    }
+
+    role_to_remove = roles[interaction.emoji.name]
+
+    if role_to_remove do
+      Nostrum.Api.remove_guild_member_role(GG.server_id(), interaction.user_id, role_to_remove)
+    end
+  end
+
+  def handle_event(_other) do
+    # IO.inspect(other)
     :ok
   end
 

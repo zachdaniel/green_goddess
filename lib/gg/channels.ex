@@ -14,4 +14,5 @@ defmodule GG.Channels do
   def red, do: 1_268_939_749_532_635_157
   def green_goddess, do: 1_268_939_238_099_910_697
   def general, do: 126_875_208_204_812_305
+  def role_choice, do: 1268950552029433938
 end

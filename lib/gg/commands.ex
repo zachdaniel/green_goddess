@@ -2,7 +2,8 @@ defmodule GG.Commands do
   use Nostrum.Consumer
 
   @commands [
-    GG.Tricks.Backflip
+    GG.Tricks.Backflip,
+    GG.Tricks.Apple
   ]
 
   require Logger
@@ -51,7 +52,8 @@ defmodule GG.Commands do
   end
 
   @role_choice GG.Channels.role_choice()
-  def handle_event({:MESSAGE_REACTION_ADD, %{channel_id: channel_id} = interaction, _ws_state}) when channel_id == @role_choice do
+  def handle_event({:MESSAGE_REACTION_ADD, %{channel_id: channel_id} = interaction, _ws_state})
+      when channel_id == @role_choice do
     roles = %{
       "Green" => GG.Roles.green(),
       "Silver" => GG.Roles.silver(),
@@ -75,7 +77,8 @@ defmodule GG.Commands do
     end
   end
 
-  def handle_event({:MESSAGE_REACTION_REMOVE, %{channel_id: channel_id} = interaction, _ws_state}) when channel_id == @role_choice do
+  def handle_event({:MESSAGE_REACTION_REMOVE, %{channel_id: channel_id} = interaction, _ws_state})
+      when channel_id == @role_choice do
     roles = %{
       "Green" => GG.Roles.green(),
       "Silver" => GG.Roles.silver(),

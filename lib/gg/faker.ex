@@ -26,6 +26,7 @@ defmodule GG.Faker do
           role: "user",
           content: """
           From: #{interaction.member.nick || interaction.author.username}
+          Color: #{GG.Roles.color(interaction.member.roles) || "unknown"}
 
           #{interaction.content}
           """
@@ -35,23 +36,32 @@ defmodule GG.Faker do
       end
 
       def handle_continue(:reply, state) do
-        run =
-          OpenaiEx.Beta.Threads.Runs.create!(state.openai, %{
-            thread_id: @thread_id,
-            assistant_id: @assistant_id
-          })
+        case OpenaiEx.Beta.Threads.Runs.create(state.openai, %{
+               thread_id: @thread_id,
+               assistant_id: @assistant_id
+             }) do
+          {:error, error} ->
+            if error.messag && is_binary(error.message) &&
+                 String.contains?(error.message, "has an active run") do
+              :timer.sleep(1000)
+              {:noreply, state, {:continue, :reply}}
+            else
+              {:noreply, state}
+            end
 
-        if state.timer do
-          Process.cancel_timer(state.timer)
+          {:ok, run} ->
+            if state.timer do
+              Process.cancel_timer(state.timer)
+            end
+
+            {:noreply,
+             %{
+               state
+               | waiting_for_response_since: nil,
+                 timer: nil,
+                 runs: [run["id"] | state.runs]
+             }}
         end
-
-        {:noreply,
-         %{
-           state
-           | waiting_for_response_since: nil,
-             timer: nil,
-             runs: [run["id"] | state.runs]
-         }}
       end
 
       def handle_continue(:check_runs, %{runs: []} = state) do
@@ -92,9 +102,6 @@ defmodule GG.Faker do
                   _ ->
                     {new_runs, messages}
                 end
-
-              {:error, _} ->
-                {new_runs, messages}
 
               _ ->
                 {[run_id | new_runs], messages}

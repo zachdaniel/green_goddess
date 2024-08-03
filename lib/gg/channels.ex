@@ -15,4 +15,8 @@ defmodule GG.Channels do
   def green_goddess, do: 1_268_939_238_099_910_697
   def general, do: 126_875_208_204_812_305
   def role_choice, do: 1_268_950_552_029_433_938
+  def apollonius, do: 1_269_315_271_253_033_030
+  def sevro, do: 1_269_344_714_893_693_000
+  def ephraim, do: 1_269_353_740_792_496_220
+  def mustang, do: 1_269_356_976_949_952_543
 end

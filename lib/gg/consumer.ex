@@ -1,10 +1,12 @@
-defmodule GG.Commands do
+defmodule GG.Consumer do
   use Nostrum.Consumer
 
   @commands [
     GG.Tricks.Backflip,
     GG.Tricks.Apple
   ]
+
+  @listeners [GG.Actors.Apollonius, GG.Actors.Sevro, GG.Actors.Ephraim, GG.Actors.Mustang]
 
   require Logger
 
@@ -46,6 +48,16 @@ defmodule GG.Commands do
 
           _ ->
             :ok
+        end
+      end
+    end
+  end
+
+  def handle_event({:MESSAGE_CREATE, interaction, _ws_state}) do
+    unless interaction.author.id == 1_268_742_445_680_693_321 do
+      for listener <- @listeners do
+        if interaction.channel_id in listener.channels() do
+          GenServer.cast(listener, {:message, interaction})
         end
       end
     end
